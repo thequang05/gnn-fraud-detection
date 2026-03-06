@@ -19,7 +19,7 @@ if __name__ == "__main__":
     )
     epochs = 300
     best_f1 = 0.0
-    patience = 20
+    patience = 10
     no_improve_count = 0
     model.train()
     for epoch in range(epochs):
