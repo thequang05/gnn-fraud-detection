@@ -74,9 +74,16 @@ Example output:
 
 ```
 Node ID    | Fraud Probability    | Actual Label
-3142       |              97.83%  | Gian lận
-8801       |              95.11%  | Gian lận
-...
+157681     |              100.00% | Gian lận
+136312     |              100.00% | Gian lận
+158303     |              100.00% | Gian lận
+140762     |              100.00% | Gian lận
+142234     |              100.00% | Gian lận
+148166     |              100.00% | Gian lận
+162513     |              100.00% | Gian lận
+166581     |              100.00% | Gian lận
+147116     |              100.00% | Gian lận
+142515     |              100.00% | Gian lận
 ```
 
 ## Architecture / Project Structure
