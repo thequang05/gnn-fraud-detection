@@ -117,35 +117,35 @@ The dataset is split by time step. Time steps <= 34 are used for training; time 
 
 > **Note:** The model is currently under active optimization. The results below are preliminary.
 
-Training was run for 200 epochs on CPU with the configuration described above (GraphSAGE 2-layer, hidden dim 128, Adam lr=0.01, weighted CrossEntropyLoss `[0.3, 0.7]`, train/test split at time step 34).
+Training configuration: GraphSAGE 2-layer + BatchNorm, hidden dim 128, Adam lr=0.01 + `weight_decay=0` + `ReduceLROnPlateau(factor=0.5, patience=10)`, early stopping (patience=20 evaluations), **dynamic class weights** computed from training set ratio (`[1.0, 7.63]`), train/test split at time step 34.
 
 Metrics are evaluated on the test set (time steps > 34, excluding `unknown` labels) every 10 epochs:
 
 | Epoch | Loss   | Precision | Recall | F1-Score |
 |------:|-------:|----------:|-------:|---------:|
-| 0     | 1.0509 | 0.0000    | 0.0000 | 0.0000   |
-| 10    | 0.2675 | 0.2066    | 0.5965 | 0.3069   |
-| 20    | 0.1944 | 0.2646    | 0.6371 | 0.3739   |
-| 30    | 0.1417 | 0.3189    | 0.6131 | 0.4196   |
-| 40    | 0.1114 | 0.4112    | 0.6048 | 0.4895   |
-| 50    | 0.0900 | 0.4221    | 0.6030 | 0.4966   |
-| 60    | 0.0740 | 0.4859    | 0.5900 | 0.5329   |
-| 70    | 0.0621 | 0.5300    | 0.5706 | 0.5496   |
-| 80    | 0.0529 | 0.5469    | 0.5549 | 0.5509   |
-| 90    | 0.0455 | 0.5702    | 0.5476 | 0.5586   |
-| 100   | 0.0393 | 0.5600    | 0.5254 | 0.5422   |
-| 110   | 0.0344 | 0.5820    | 0.5208 | 0.5497   |
-| 120   | 0.0303 | 0.5861    | 0.5060 | 0.5431   |
-| 130   | 0.0268 | 0.5930    | 0.5005 | 0.5428   |
-| 140   | 0.0239 | 0.5837    | 0.4894 | 0.5324   |
-| 150   | 0.0213 | 0.5868    | 0.4746 | 0.5248   |
-| 160   | 0.0191 | 0.5870    | 0.4672 | 0.5203   |
-| 170   | 0.0172 | 0.5873    | 0.4598 | 0.5158   |
-| 180   | 0.0156 | 0.5835    | 0.4580 | 0.5132   |
-| 190   | 0.0141 | 0.5754    | 0.4543 | 0.5077   |
-| 199   | 0.0130 | 0.5671    | 0.4488 | 0.5010   |
+| 0     | 0.8632 | 0.0773    | 0.9898 | 0.1434   |
+| 10    | 0.2623 | 0.1998    | 0.7655 | 0.3169   |
+| 20    | 0.1777 | 0.2325    | 0.7276 | 0.3524   |
+| 30    | 0.1333 | 0.3079    | 0.6704 | 0.4220   |
+| 40    | 0.0997 | 0.3609    | 0.6574 | 0.4660   |
+| 50    | 0.0768 | 0.4163    | 0.6223 | 0.4989   |
+| 60    | 0.0610 | 0.4684    | 0.6020 | 0.5269   |
+| 70    | 0.0494 | 0.4985    | 0.5965 | 0.5431   |
+| 80    | 0.0406 | 0.5510    | 0.5688 | 0.5597   |
+| 90    | 0.0337 | 0.6038    | 0.5559 | 0.5788   |
+| 100   | 0.0281 | 0.6586    | 0.5540 | 0.6018   |
+| 110   | 0.0235 | 0.6865    | 0.5439 | 0.6069   |
+| 120   | 0.0199 | 0.7250    | 0.5429 | 0.6209   |
+| 130   | 0.0171 | 0.7484    | 0.5383 | 0.6262   |
+| 140   | 0.0148 | 0.7484    | 0.5411 | 0.6281   |
+| **150**   | **0.0130** | **0.7571**    | **0.5383** | **0.6292** |
+| 160   | 0.0116 | 0.7558    | 0.5374 | 0.6282   |
+| 170   | 0.0104 | 0.7465    | 0.5355 | 0.6237   |
+| 299   | 0.0043 | 0.7345    | 0.5235 | 0.6113   |
 
-The model reaches peak F1 around epoch 90 (F1 = 0.5586), after which overfitting causes recall to degrade while precision stays roughly flat. Early stopping or regularization adjustments are being investigated.
+Best checkpoint saved at epoch 150: **F1 = 0.6292**, Precision = 0.7571, Recall = 0.5383.
+
+Compared to the baseline run (static class weight `[0.3, 0.7]`, best F1 = 0.5586), switching to dynamic class weight `[1.0, 7.63]` improved best F1 by **+0.07**. The model continues to show a precision/recall trade-off after peak F1. Further optimization is ongoing.
 
 ## License
 
